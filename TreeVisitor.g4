@@ -1,10 +1,9 @@
 grammar TreeVisitor ;
 
 //start:((method|void)*main?)|(main?(method|void)*)|(method* main void*)|(method|void)*;
-start: method* ;
-coments: ((Coments WS? (.*?) WS?) | (Comments WS? ((.*?)) WS))+;
+start: comment;
 
-comment: '//' ~('\r' | '\n')*| '/*' .* '*/';
+comment:(WS* Comment WS*)*;
 
 method:Ws* ((P|'public') Ws* 'static'?) Ws* ('int'|'boolean'|'Tree') Ws* Id Ws*'('Ws*
         (('int'|'boolean'|'Tree') Ws* Id Ws*)?(','Ws*('int'|'boolean'|'Tree') Ws* Id Ws*)*')'Ws*
@@ -13,19 +12,11 @@ method:Ws* ((P|'public') Ws* 'static'?) Ws* ('int'|'boolean'|'Tree') Ws* Id Ws*'
 
 void:Ws* (P|'public') Ws* 'static'? Ws* 'void' Ws* Id Ws*'('(('int'|'double'|'long'|'float'|'String'|'bool') Ws* Id Ws*)?
         (','Ws*('int'|'double'|'long'|'float'|'String'|'bool') Ws* Id Ws*)*')'Ws*'{' Ws*
-        (if|for|switch|while|do_while|varSignif|varInt|varFloat|varBool|varString|nestedif|varfor|print)*WS*
+        (if|while|varSignif|varInt|varFloat|varBool|varString|nestedif|print)*WS*
         '}'Ws*;
 main:Ws*'public'Ws* 'static'Ws* 'void'Ws* 'main'Ws* '(' Ws* 'String'Ws*'['Ws*']'Ws*'args'Ws*')' Ws* '{' Ws*
-        (if|nestedif|for|switch|while|do_while|varSignif|varInt|varFloat|varBool|varString|nestedif|varfor|print)*WS*
+        (if|nestedif|while|varSignif|varInt|varFloat|varBool|varString|nestedif|print)*WS*
         Ws*'}'Ws*;
-switch:'switch'Ws*'('Ws*(Id|Integer|switchcond)')'Ws*'{'Ws*
-            (WS*'case'Ws* Ws*(Integer|'\''Id'\'')Ws* Ws*':'Ws*'{'?Ws*
-                (print|for|if|switch)*Ws*'}'?Ws*
-                'break'Ws*Semicolon Ws*)+
-            (Ws*'default'Ws*':'Ws*
-                (print|for|if)*
-            )?WS*
-        Ws*'}';
 print:'System.out.println('Ws*(Id|String)Ws*')'Ws*';'Ws*;
 
 arithmecp:  Ws* ('int'|'double'|'long'|'float'|'String'|'bool') Ws* Id Ws* '='
@@ -63,9 +54,6 @@ logic: cond ((Ws* Logicaloperator Ws* cond Ws*)*);
 while: Ws*('while' Ws* '(' Ws* (cond|Id) Ws* ')' Ws* '{' Ws*
     ( var|nestedif  )* Ws* '}' Ws*);
 
-do_while: (Ws* 'do' Ws* '{' Ws* (switch+| if+ |varSignif|varInt|varFloat|print|varBool|varString|nestedif | for+ | varSignfor+)* Ws* '}' WS*
-    'while' Ws* '(' Ws* cond Ws* ')' Ws* Semicolon Ws*);
-
 
 //tokens
 Type:('int'|'double'|'string'|'char'|'long'|'float'|'boolean'|'Tree');
@@ -75,6 +63,7 @@ Boolean:('true'|'false');
 Id:('a'..'z'|'A'..'Z'|'_'|'$')+('0'..'9'|'a'..'z'|'A'..'Z'|'_'|'$')*;
 Scol:';';
 Eq: '=';
+
 Ws:(' '|'\t'|'\r'|'\n')+{skip();};
 Condoperation:('>'|'<'|'<='|'>='|'=='|'!=');
 Logicaloperator:('&&'|'||');
@@ -84,5 +73,4 @@ Opbrack: ('{');
 Closbrack: ('}');
 Oper : ('+' | '-' | '*' | '/' | '|' | '&' | '%');
 IncDec:('++'|'--');
-Coments:  '/*' | '*/';
-Comments: '//';
+Comment: Ws?'//' ~('\r'|'\n')* ;
