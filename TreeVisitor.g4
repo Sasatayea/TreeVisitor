@@ -1,11 +1,9 @@
 grammar TreeVisitor ;
 
 //start:((method|void)*main?)|(main?(method|void)*)|(method* main void*)|(method|void)*;
-start: class*;
+start: comment;
 
-comment:(WS* Comment WS*);
-
-class:  Ws* 'class' Ws+ (Id|'Tree') Ws* '{' Ws* (method|var | comment)* Ws* '}' Ws*;
+comment:(WS* Comment WS*)*;
 
 method:Ws* ((P|'public') Ws* 'static'?) Ws* ('int'|'boolean'|'Tree') Ws* Id Ws*'('Ws*
         (('int'|'boolean'|'Tree') Ws* Id Ws*)?(','Ws*('int'|'boolean'|'Tree') Ws* Id Ws*)*')'Ws*
@@ -32,7 +30,7 @@ varfor:'int'? (Ws* Id ( Ws* Eq Ws* Integer Ws*)? Ws*)+;
 condfor:((Id Ws* (ArithOpr1|ArithOpr2))*(Integer|Id) Ws*Condoperation Ws* ((Integer|Id)Ws* (ArithOpr1|ArithOpr2)?)+);
 varSignfor:(Id Ws*('++'|'--'))|(Id Ws*('+='|'-='|'*='|'/=')Integer);
 
-if: Ws*'if'Ws*'(' Ws? ifCond ')' Ws* ( ( Ws*'{' Ws?((var |if)*)Ws*'}'Ws*) | Ws*(var)?Ws*|if |Ws?((var |if)*)Ws*) ;
+if: Ws*'if'Ws*'(' Ws? ifCond ')' Ws*(('{' Ws?((var)*if*)Ws*'}')|Ws*(var)?Ws*|if) ;
 else:Ws*'else'Ws*(('{'Ws*((var)+if*)Ws*'}')|(var)Ws*|if);
 elseif:Ws*'else'if;
 nestedif: (Ws* if Ws* (elseif)* Ws* else?);
@@ -45,12 +43,11 @@ varString:('String'? Ws* Id Ws* (Scol| Ws* Eq Ws* String Ws* Scol) Ws*);
 varTree:(Ws* 'Tree'? Ws* Id Ws*(Scol| Ws* Eq Ws* (Integer|Id) Ws* Scol Ws*) Ws*);
 varId:Ws*Id Ws* Eq Ws* (Id|Boolean) Ws* Scol Ws*;
 var_op: Ws*Id Ws* Eq Ws* Id Ws* ('+' | '-' | '*' | '/' | '|' | '&' | '%') Ws* (Id|Integer) Ws* Scol Ws* ;
-var_dot: Ws* Id Ws* Eq Ws* Id'.' Id'(' Ws* (Id)? Ws* ')' Ws* Scol Ws* ;
+var_dot: Ws* Id Ws* Eq Ws* Id'.' Id'(' Ws* Id? Ws* ')' Ws* Scol Ws* ;
 var_child: Ws* Id Ws* Eq Ws* Id Ws* (Id|'Tree') Ws*'('')' Ws* Scol Ws* ;
 var: varSignif|varInt|varFloat|varBool|varString|varTree|varId|var_op|var_dot|var_child;
 
-ifCond: Ws*Id Ws*| Ws* Id Ws* Condoperation Ws*Id Ws*|Ws* '!'Ws*'('Ws*Id Ws* Condoperation Ws*Id Ws* ')' Ws* |
-        Ws* Id'.'Id '(' Ws* ')' ;
+ifCond: Ws*Id Ws*| Ws* Id Ws* Condoperation Ws*Id Ws*|Ws* '!'Ws*'('Ws*Id Ws* Condoperation Ws*Id Ws* ')'  ;
 cond: (Id Ws*((Operation|Doperation) Ws? Id? Ws?)? (Condoperation|Doperation) Ws* (Integer|Float|Id) Ws*)+;
 logic: cond ((Ws* Logicaloperator Ws* cond Ws*)*);
 
