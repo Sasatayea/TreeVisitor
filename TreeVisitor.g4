@@ -30,7 +30,7 @@ varfor:'int'? (Ws* Id ( Ws* Eq Ws* Integer Ws*)? Ws*)+;
 condfor:((Id Ws* (ArithOpr1|ArithOpr2))*(Integer|Id) Ws*Condoperation Ws* ((Integer|Id)Ws* (ArithOpr1|ArithOpr2)?)+);
 varSignfor:(Id Ws*('++'|'--'))|(Id Ws*('+='|'-='|'*='|'/=')Integer);
 
-if: Ws*'if'Ws*'(' Ws? ifCond ')' Ws*(('{' Ws?((var)*if*)Ws*'}')|Ws*(var)?Ws*|if) ;
+if: Ws*'if'Ws*'(' Ws? ifCond ')' Ws*(('{' Ws?((var)*if*)Ws*'}')|Ws*(var)?Ws*|if);
 else:Ws*'else'Ws*(('{'Ws*((var)+if*)Ws*'}')|(var)Ws*|if);
 elseif:Ws*'else'if;
 nestedif: (Ws* if Ws* (elseif)* Ws* else?);
@@ -74,3 +74,4 @@ Closbrack: ('}');
 Oper : ('+' | '-' | '*' | '/' | '|' | '&' | '%');
 IncDec:('++'|'--');
 Comment: Ws?'//' ~('\r'|'\n')* ;
+Com:'s';
