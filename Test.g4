@@ -103,7 +103,7 @@ class1: (((Abstract WS)? Public WS | Public WS (Abstract WS)?)? Class WS Id WS?
 
 object_class: (Id WS Id WS? (Sim WS? | Equal WS? New WS Id WS? Obrac WS? ((Id | Integer) WS? (WS? Com WS? (Id | Integer))*)? WS? Cbrac WS? Sim WS?));
 
-coments: ((Coments WS? (.*?) WS?) | (Comments WS? ((.*?)) WS))+;
+coments: ( (Comments WS? ((.*?)) WS))+;
 
 // tokens
 Public: ('public' | 'private' | 'protected');
