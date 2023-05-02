@@ -1,6 +1,7 @@
 grammar TreeVisitor ;
 
-start:((method|void)*main?)|(main?(method|void)*)|(method* main void*)|(method|void)*;
+//start:((method|void)*main?)|(main?(method|void)*)|(method* main void*)|(method|void)*;
+coments: ((Coments WS? (.*?) WS?) | (Comments WS? ((.*?)) WS))+;
 
 
 method:Ws* (((P|'public') Ws* 'static'?)|((P|'public')? Ws* 'static')) Ws* ('int'|'double'|'long'|'float'|'String'|'bool') Ws* Id Ws*'('
@@ -73,3 +74,5 @@ Opbrack: ('{');
 Closbrack: ('}');
 Oper : ('+' | '-' | '*' | '/' | '|' | '&' | '%');
 IncDec:('++'|'--');
+Coments:  '/*' | '*/';
+Comments: '//';
