@@ -5,6 +5,7 @@ start: comment;
 
 comment:(WS* Comment WS*)*;
 
+
 method:Ws* ((P|'public') Ws* 'static'?) Ws* ('int'|'boolean'|'Tree') Ws* Id Ws*'('Ws*
         (('int'|'boolean'|'Tree') Ws* Id Ws*)?(','Ws*('int'|'boolean'|'Tree') Ws* Id Ws*)*')'Ws*
        '{' Ws* (if|nestedif|while|varSignif|var|print)* WS*
@@ -74,3 +75,4 @@ Closbrack: ('}');
 Oper : ('+' | '-' | '*' | '/' | '|' | '&' | '%');
 IncDec:('++'|'--');
 Comment: Ws?'//' ~('\r'|'\n')* ;
+Test:'aj';
