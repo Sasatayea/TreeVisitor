@@ -1,16 +1,19 @@
 grammar TreeVisitor ;
 
 //start:((method|void)*main?)|(main?(method|void)*)|(method* main void*)|(method|void)*;
-start: method*;
+start: (comment? Ws?'class'Ws Id Ws? '{'Ws? main Ws?'}'Ws?) (Ws?class Ws?)* ;
 
-comment:(WS* Comment WS*)*;
+comment:(WS* Comment WS*);
+class:Ws?'class'Ws (Id|'Tree'|'MyVisitor'|'Visitor') Ws?('extends' Ws (Id|'Visitor')Ws?)*
+    '{'Ws?(comment|var |method)*Ws?'}'Ws?;
+test:
+         '{'Ws?(comment|var |method)*Ws?'}'Ws?;
+method:Ws* (('public') Ws* 'static'?) Ws* ('int'|'boolean'|'Tree'|'Visitor'|'MyVisitor') Ws* Id Ws*'('Ws*
+        (('int'|'boolean'|'Visitor'|'Tree'|'MyVisitor') Ws* Id Ws*)?(','Ws*('int'|'boolean'|'Tree'|'MyVisitor')
+        Ws* Id Ws*)*')'Ws*'{' Ws* (if|nestedif|while|varSignif|var|print)*
+        Ws*'return' Ws* (Integer|Id|Boolean) Ws* Scol Ws* '}'Ws*;
 
-method:Ws* ((P|'public') Ws* 'static'?) Ws* ('int'|'boolean'|'Tree'|'MyVisitor') Ws* Id Ws*'('Ws*
-        (('int'|'boolean'|'Tree'|'MyVisitor') Ws* Id Ws*)?(','Ws*('int'|'boolean'|'Tree'|'MyVisitor')
-        Ws* Id Ws*)*')'Ws*'{' Ws* (if|nestedif|while|varSignif|var|print)* WS*
-        'return' Ws* (Id|Boolean) Ws* Scol Ws* '}'Ws*;
-
-void:Ws* (P|'public') Ws* 'static'? Ws* 'void' Ws* Id Ws*'('(('int'|'double'|'long'|'float'|'String'|'bool') Ws* Id Ws*)?
+void:Ws* ('public') Ws* 'static'? Ws* 'void' Ws* Id Ws*'('(('int'|'double'|'long'|'float'|'String'|'bool') Ws* Id Ws*)?
         (','Ws*('int'|'double'|'long'|'float'|'String'|'bool') Ws* Id Ws*)*')'Ws*'{' Ws*
         (if|while|var|nestedif|print)*WS*
         '}'Ws*;
@@ -47,7 +50,7 @@ varId:Ws*Id Ws* Eq Ws* (Id|Boolean) Ws* Scol Ws*;
 var_op: Ws*Id Ws* Eq Ws* Id Ws* ('+' | '-' | '*' | '/' | '|' | '&' | '%') Ws* (Id|Integer) Ws* Scol Ws* ;
 var_dot: Ws* Id Ws* Eq Ws* Id'.' Id'(' Ws* (Id|Boolean|whilecond|Integer)? Ws* ')' Ws* Scol Ws* ;
 var_child: Ws* Id Ws* Eq Ws*('this.')?Id Ws* (Id|'Tree'|'Visitor'|'MyVisitor') Ws*'('Ws*')' Ws* Scol Ws* ;
-var_child_this:Ws* Id Ws* Eq Ws*('this.')?Id Ws*'('(Id ',' Ws?Id Ws?|Id'.'Id'('Ws?')')')'Ws?Scol;
+var_child_this:Ws* Id Ws* Eq Ws*('this.')?Id Ws*'('(Ws?Id Ws?|(Ws?Id ',' Ws?Id Ws?|Id'.'Id'('Ws?')'Ws?))')'Ws?Scol;
 var: varSignif|varInt|varFloat|varBool|varString|varTree|myVisitor|varId|var_op|var_dot|var_child|
         var_child_this|whilecond;
 
