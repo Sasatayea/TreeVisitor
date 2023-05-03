@@ -1,7 +1,7 @@
 grammar TreeVisitor ;
 
 //start:((method|void)*main?)|(main?(method|void)*)|(method* main void*)|(method|void)*;
-start: (comment? Ws?'class'Ws Id Ws? '{'Ws? main Ws?'}'Ws?) (Ws?class Ws?)* ;
+start: (comment* Ws?'class'Ws Id Ws? '{'Ws? main Ws?'}'Ws?) (Ws?class Ws?)* ;
 
 comment:(WS* Comment WS*);
 class:Ws?'class'Ws (Id|'Tree'|'MyVisitor'|'Visitor') Ws?('extends' Ws (Id|'Visitor')Ws?)*
